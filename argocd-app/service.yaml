@@ -3,7 +3,7 @@ kind: Service
 metadata:
  name: flask-node-port-svc
 spec:
- type: LoadBalancer
+ type: Locd adBalancer
  selector:
  app: flaskdemo
  ports:
