@@ -14,12 +14,3 @@ jobs:
         registry: 192.168.178.110
         username: ${{ secrets.HARBOR_USERNAME  }}
         password: ${{ secrets.HARBOR_PASSWORD }}
-
-    - uses: actions/checkout@v3
-    - name: Build and tag image
-      run: |
-          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-          docker build -t http://192.168.178.110/k8spipeline/${{ github.repository }}:$COMMIT_SHA -f pipeline/Dockerfile .
-
-    - name: Push image to Harbor
-      run: docker push http://192.168.178.110/k8spipeline/${{ github.repository }}:$COMMIT_SHA
