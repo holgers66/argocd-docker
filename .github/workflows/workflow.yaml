@@ -10,6 +10,6 @@ jobs:
     steps:
     - uses: docker/login-action@v1
       with:
-        registry: harbor.example.com
+        registry: 192.168.178.110
         username: ${{ secrets.HARBOR_USERNAME  }}
         password: ${{ secrets.HARBOR_PASSWORD }}
