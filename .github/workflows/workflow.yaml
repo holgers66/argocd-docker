@@ -1,20 +1,24 @@
-name: ci
-
+name: Build and Push Docker Image to Harbor
 on:
   push:
     branches:
       - "main"
 
 jobs:
-  harbor:
-- name: Log in to Harbor
-  run: |
-        echo ${{ secrets.HARBOR_CREDENTIALS }} | base64 --decode | docker login -u $(cut -d ':' -f1 <<< "${{ secrets.HARBOR_CREDENTIALS }}") --password-stdin ${{ secrets.HARBOR_REGISTRY_URL }}
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
 
-- name: Build and tag image
-  run: |
-    COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
-    docker build -t ${{ secrets.HARBOR_REGISTRY_URL }}/k8spipeline/${{ github.repository }}:$COMMIT_SHA -f pipeline/Dockerfile .    
+      - name: Log in to Harbor
+        run: |
+          echo ${{ secrets.HARBOR_CREDENTIALS }} | base64 --decode | docker login -u $(cut -d ':' -f1 <<< "${{ secrets.HARBOR_CREDENTIALS }}") --password-stdin ${{ secrets.HARBOR_REGISTRY_URL }}
 
-- name: Push image to Harbor
-  run: docker push ${{ secrets.HARBOR_REGISTRY_URL }}/k8spipeline/${{ github.repository }}:$COMMIT_SHA
+      - name: Build and tag image
+        run: |
+          COMMIT_SHA=$(echo $GITHUB_SHA | cut -c1-7)
+          docker build -t ${{ secrets.HARBOR_REGISTRY_URL }}/k8spipeline/${{ github.repository }}:$COMMIT_SHA -f pipeline/Dockerfile .
+              
+      - name: Push image to Harbor
+          run: docker push ${{ secrets.HARBOR_REGISTRY_URL }}/k8spipeline/${{ github.repository }}:$COMMIT_SHA
