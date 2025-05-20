@@ -18,7 +18,7 @@ spec:
         app: flaskdemo
     spec:
       containers:
-      - image: devopswithsam/argodemo:22
+      - image: ghcr.io/holgers66/k8splayground:main
         name: flaskdemo
         resources: {}
 status: {}
