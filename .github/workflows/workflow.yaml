@@ -32,3 +32,6 @@ jobs:
           file: ./pipeline/Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
+          tags: |
+            holgers66/cd-test:latest
+            holgers66/cd-test:${{ github.run_number }}
